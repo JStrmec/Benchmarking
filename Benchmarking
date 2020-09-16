@@ -1,42 +1,51 @@
 package Benchmarking;
 /*CPTS 233 Project PA1-Benchmarking
  * Jocelyn Strmec
- * 09.11.2020
+ * 09.16.2020
  *
  */
 import java.io.*;
 import java.util.*;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.concurrent.TimeUnit;
 
 public class Benchmarking {
-    public static String text;
-    public static int min=-1, max=-1;
-    public static ArrayList<Integer> num = new ArrayList<Integer>();
-    static LinkedList<Integer> numberLinkedList = new LinkedList<Integer>();
+    public static String text;//accepting variable for string for text file
+    public static int min=-1, max=-1, mid;
+    public static long time_insert,time_min,time_max,time_med;
+    public static ArrayList<Integer> num = new ArrayList<Integer>();//Array list to help sort
+    static LinkedList<Integer> numberLinkedList = new LinkedList<Integer>();//Linked List
     
     //Accepts file from user input and allows it to be sent to readFile method,
-    //Method to read file and return to linkedlist
-     static void readFile(String a) throws FileNotFoundException {
+    //Method to read file and calls sort which will read value and add to linked list
+     static void readFile(String a) throws FileNotFoundException,InterruptedException{
         Scanner input = new Scanner(new File(a));
+        long startTime = System.nanoTime();
         while (input.hasNext()) {
             int b = input.nextInt();
             
-            ///if else to sort element before it goes in linkedlist
+            ///method sort element before it goes in linked list
             sortIntegers(b);	
+            TimeUnit.SECONDS.sleep(5);
           }
+        long endTime = System.nanoTime();
         input.close();
+        time_insert = endTime - startTime;
         }
-        ///Initial sorter for integers less than current min and 
-        //max and a pass to a recurring method to sort linked list more accurately
+     
+     ///Initial sorter for integers toss in a array list, sorts, 
+     //then spits index of array list add to know where to add in inked list
      	static void sortIntegers(int a) {
-     		if(min ==-1 && max ==-1) {
+     		if(min ==-1 && max ==-1) {//setting of min and max for easy recall later
      			min= a;
      			max= a;
      		}
-     		if(a<= min) {
-     			min = a;
+     		if(a > max) {
+     			max = a;
      		}
+     		if(a< min)
+     			min = a;
      		num.add(a);
      		Collections.sort(num);
      		int indexA = num.indexOf(a);
@@ -44,12 +53,20 @@ public class Benchmarking {
      		return;
      	}
      	
+     	static int getMin() {
+     		return min;
+     	}
+     	
+     	static int getMax() {
+     		return max;
+     	}
+     		
 	////>= numberLinkedList.get(c) && a <= numberLinkedList.get(c+1)
-        public static void main(String [] args){
+        public static void main(String [] args)throws InterruptedException{
         	
         	try (Scanner input = new Scanner(System.in)) {
-        		System.out.println("Which text file would you like to submit?");
-        		text= "input1.txt"; //input.next();
+        		System.out.println("Which text file would you like to submit?");  ///Asks for input of file of integers
+        		text= "input1.txt"; //input.next(); ///Accepts input for integers
         	}
         	try {
 				readFile(text);
@@ -58,6 +75,34 @@ public class Benchmarking {
 				e.printStackTrace();
 			}
         	System.out.println(numberLinkedList.toString());
+        	//Time to get Min
+        	long startTime = System.nanoTime();
+        	getMin();
+        	TimeUnit.SECONDS.sleep(5);
+        	long endTime = System.nanoTime();
+        	time_med = endTime - startTime;
+        	//Time to get Med
+        	startTime = System.nanoTime();
+        	mid = numberLinkedList.get(numberLinkedList.lastIndexOf(max)/2);
+        	TimeUnit.SECONDS.sleep(5);
+        	endTime = System.nanoTime();
+        	time_med = endTime - startTime;
+        	//Time to get Max
+        	startTime = System.nanoTime();
+        	getMax();
+        	TimeUnit.SECONDS.sleep(5);
+        	endTime = System.nanoTime();
+        	time_med = endTime - startTime;
+        	
+        	
+        	System.out.println("Min: "+ min +"\nMed: "+mid + "\nMax: "+max
+        				+"\nExecution time_insert in nanoseconds  : " + time_insert
+        				+"\nExecution time in milliseconds :"+ time_insert/ 1000000
+        				+"\\nExecution time_insert in nanoseconds  : " + time_min
+        				+"\nExecution time in milliseconds :"+ time_min/ 1000000
+        				+"\\nExecution time_insert in nanoseconds  : " + time_med
+        				+"\nExecution time in milliseconds :"+ time_med/ 1000000
+        				+"\\nExecution time_insert in nanoseconds  : " + time_max
+        				+"\nExecution time in milliseconds :"+ time_max/ 1000000);
     }
-    
 }
