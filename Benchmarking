@@ -1,1 +1,63 @@
+package Benchmarking;
+/*CPTS 233 Project PA1-Benchmarking
+ * Jocelyn Strmec
+ * 09.11.2020
+ *
+ */
+import java.io.*;
+import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
 
+public class Benchmarking {
+    public static String text;
+    public static int min=-1, max=-1;
+    public static ArrayList<Integer> num = new ArrayList<Integer>();
+    static LinkedList<Integer> numberLinkedList = new LinkedList<Integer>();
+    
+    //Accepts file from user input and allows it to be sent to readFile method,
+    //Method to read file and return to linkedlist
+     static void readFile(String a) throws FileNotFoundException {
+        Scanner input = new Scanner(new File(a));
+        while (input.hasNext()) {
+            int b = input.nextInt();
+            
+            ///if else to sort element before it goes in linkedlist
+            sortIntegers(b);	
+          }
+        input.close();
+        }
+        ///Initial sorter for integers less than current min and 
+        //max and a pass to a recurring method to sort linked list more accurately
+     	static void sortIntegers(int a) {
+     		if(min ==-1 && max ==-1) {
+     			min= a;
+     			max= a;
+     		}
+     		if(a<= min) {
+     			min = a;
+     		}
+     		num.add(a);
+     		Collections.sort(num);
+     		int indexA = num.indexOf(a);
+     		numberLinkedList.add(indexA, a);
+     		return;
+     	}
+     	
+	////>= numberLinkedList.get(c) && a <= numberLinkedList.get(c+1)
+        public static void main(String [] args){
+        	
+        	try (Scanner input = new Scanner(System.in)) {
+        		System.out.println("Which text file would you like to submit?");
+        		text= "input1.txt"; //input.next();
+        	}
+        	try {
+				readFile(text);
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        	System.out.println(numberLinkedList.toString());
+    }
+    
+}
