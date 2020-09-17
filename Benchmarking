@@ -2,32 +2,35 @@ package Benchmarking;
 /*CPTS 233 Project PA1-Benchmarking
  * Jocelyn Strmec
  * 09.16.2020
- *
+ * GITHUB URL:https://github.com/Strmec01/Benchmarking.git
  */
 import java.io.*;
 import java.util.*;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.concurrent.TimeUnit;
-
+//import java.util.concurrent.TimeUnit;
+class RunTimes{
+	long time_insert,time_min,time_med,time_max;
+}
 public class Benchmarking {
     public static String text;//accepting variable for string for text file
     public static int min=-1, max=-1, mid;
     public static long time_insert,time_min,time_max,time_med;
     public static ArrayList<Integer> num = new ArrayList<Integer>();//Array list to help sort
-    static LinkedList<Integer> numberLinkedList = new LinkedList<Integer>();//Linked List
+    static LinkedList<Integer> numberLinkedList = new LinkedList<Integer>();//Linked List]
+    public static ArrayList<RunTimes> avg = new ArrayList<>();//Arraylist for average time runs
     
     //Accepts file from user input and allows it to be sent to readFile method,
     //Method to read file and calls sort which will read value and add to linked list
      static void readFile(String a) throws FileNotFoundException,InterruptedException{
         Scanner input = new Scanner(new File(a));
-        long startTime = System.nanoTime();
+       long startTime = System.nanoTime();
         while (input.hasNext()) {
             int b = input.nextInt();
             
             ///method sort element before it goes in linked list
             sortIntegers(b);	
-            TimeUnit.SECONDS.sleep(5);
+          //\\TimeUnit.SECONDS.sleep(5);
           }
         long endTime = System.nanoTime();
         input.close();
@@ -47,62 +50,118 @@ public class Benchmarking {
      		if(a< min)
      			min = a;
      		num.add(a);
-     		Collections.sort(num);
-     		int indexA = num.indexOf(a);
+     		Collections.sort(num);///sorts ArrayList
+     		int indexA = num.indexOf(a);//Fetches index of passed number to add to linked list
      		numberLinkedList.add(indexA, a);
      		return;
      	}
      	
-     	static int getMin() {
+     	static int getMin() {//returns max
      		return min;
      	}
      	
-     	static int getMax() {
+     	static int getMax() {//returns max
      		return max;
      	}
+     	
+     	static void getRunTimes() { //// Calls Runtimes and averages form each time
+     		long insert_avg=0;
+     		long min_avg=0;
+     		long mid_avg=0;
+     		long max_avg=0;
+     		for(int i=0;i<avg.size();i++) {
+     			insert_avg += avg.get(i).time_insert;
+     			System.out.println(avg.get(i).time_insert);
+     			min_avg += avg.get(i).time_min;
+     			System.out.println(avg.get(i).time_min);
+     			mid_avg += avg.get(i).time_med;
+     			System.out.println(avg.get(i).time_med);
+     			max_avg += avg.get(i).time_max;
+     			System.out.println(avg.get(i).time_max);
+     		}
+     		insert_avg= insert_avg/avg.size();
+ 			min_avg= min_avg/avg.size();
+ 			mid_avg= mid_avg/avg.size();
+ 			max_avg= max_avg/avg.size();
+     		System.out.println("Averages: \nRuns:"+avg.size()+"\nExecution time_insert in milliseconds :" +insert_avg
+     				+"\nExecution time_min in milliseconds :"+min_avg
+     				+"\nExecution time_med in milliseconds :" +mid_avg 
+     				+"\nExecution time_max in milliseconds :"+max_avg);
      		
-	////>= numberLinkedList.get(c) && a <= numberLinkedList.get(c+1)
-        public static void main(String [] args)throws InterruptedException{
-        	
-        	try (Scanner input = new Scanner(System.in)) {
-        		System.out.println("Which text file would you like to submit?");  ///Asks for input of file of integers
-        		text= "input1.txt"; //input.next(); ///Accepts input for integers
-        	}
-        	try {
+     	}
+     	
+     	
+     	static void goGetMMM()throws InterruptedException {
+     		try {
 				readFile(text);
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-        	System.out.println(numberLinkedList.toString());
-        	//Time to get Min
-        	long startTime = System.nanoTime();
-        	getMin();
-        	TimeUnit.SECONDS.sleep(5);
-        	long endTime = System.nanoTime();
-        	time_med = endTime - startTime;
-        	//Time to get Med
-        	startTime = System.nanoTime();
-        	mid = numberLinkedList.get(numberLinkedList.lastIndexOf(max)/2);
-        	TimeUnit.SECONDS.sleep(5);
-        	endTime = System.nanoTime();
-        	time_med = endTime - startTime;
-        	//Time to get Max
-        	startTime = System.nanoTime();
-        	getMax();
-        	TimeUnit.SECONDS.sleep(5);
-        	endTime = System.nanoTime();
-        	time_med = endTime - startTime;
+     		System.out.println(numberLinkedList.toString());
+     		//Time to get Min 
+     		long startTime = System.nanoTime(); 
+      	     getMin();
+			  //TimeUnit.SECONDS.sleep(1); 
+			  long endTime = System.nanoTime(); 
+			  time_min = endTime - startTime; 
+			  
+			 
+			  
+			  //Time to get Med 
+			  startTime = System.nanoTime(); 
+			  mid = numberLinkedList.get(numberLinkedList.lastIndexOf(max)/2);
+			  //TimeUnit.SECONDS.sleep(1);   */This was only included because the code I found that so I could time had it in.
+			  endTime = System.nanoTime(); 
+			  time_med = endTime - startTime; 
+			  
+			  
+			  
+			  //Time to get Max 
+			  startTime = System.nanoTime(); 
+			  getMax();
+			  //TimeUnit.SECONDS.sleep(1); 
+			  endTime = System.nanoTime(); 
+			  time_max = endTime -startTime;   
+			  
+			  RunTimes r =new RunTimes();
+			  r.time_insert =time_insert/1000000;
+			  r.time_min = time_min/1000000;  //add to array list
+			  r.time_med = time_med/1000000; //add to array list
+			  r.time_max = time_max/1000000;//add to array list
+			  avg.add(r);
+     	}
+     	
+        public static void main(String [] args)throws InterruptedException{
         	
+        	try (Scanner input = new Scanner(System.in)) {
+        		//System.out.println("Which text file would you like to submit?");  ///Asks for input of file of integers
+        		text= "input2.txt";//input.next(); ///Accepts input for integers
+        	}
+			/*
+			 * try { readFile(text); } catch (FileNotFoundException e) { // TODO
+			 * Auto-generated catch block e.printStackTrace(); }
+			 */
         	
-        	System.out.println("Min: "+ min +"\nMed: "+mid + "\nMax: "+max
-        				+"\nExecution time_insert in nanoseconds  : " + time_insert
-        				+"\nExecution time in milliseconds :"+ time_insert/ 1000000
-        				+"\\nExecution time_insert in nanoseconds  : " + time_min
-        				+"\nExecution time in milliseconds :"+ time_min/ 1000000
-        				+"\\nExecution time_insert in nanoseconds  : " + time_med
-        				+"\nExecution time in milliseconds :"+ time_med/ 1000000
-        				+"\\nExecution time_insert in nanoseconds  : " + time_max
-        				+"\nExecution time in milliseconds :"+ time_max/ 1000000);
+        	  
+			goGetMMM();   ////Add goGetMMM() for runTime Averages.
+			//goGetMMM();
+			//goGetMMM();
+			//goGetMMM();
+			
+			  
+			
+			  System.out.println("Min: "+ min +"\nMed: "+mid + "\nMax: "+max
+			  +"\nExecution time_insert in nanoseconds  : " + time_insert
+			  +"\nExecution time_insert in milliseconds :"+ time_insert/ 1000000
+			  +"\nExecution time_min in nanoseconds  : " + time_min
+			  +"\nExecution time_min in milliseconds :"+ time_min/ 1000000
+			  +"\nExecution time_med in nanoseconds  : " + time_med
+			  +"\nExecution time_med in milliseconds :"+ time_med/ 1000000
+			  +"\nExecution time_max in nanoseconds  : " + time_max
+			  +"\nExecution time_max in milliseconds :"+ time_max/ 1000000);
+			  
+			  //getRunTimes();   //\\This is for an average, probably doesn't need to be run for input2, 
+			 
     }
 }
