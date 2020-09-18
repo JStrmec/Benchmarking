@@ -3,6 +3,8 @@ package Benchmarking;
  * Jocelyn Strmec
  * 09.16.2020
  * GITHUB URL:https://github.com/Strmec01/Benchmarking.git
+ * SMALL WARNING: When I was running input2.txt on my computer it took a bit more than 15 minutes to run through. 
+ *I know that my way of adding to the list is inefficent but I couldn't find another way that gave me accuracy.Sorry.
  */
 import java.io.*;
 import java.util.*;
@@ -71,13 +73,13 @@ public class Benchmarking {
      		long max_avg=0;
      		for(int i=0;i<avg.size();i++) {
      			insert_avg += avg.get(i).time_insert;
-     			System.out.println(avg.get(i).time_insert);
+     			//System.out.println(avg.get(i).time_insert);
      			min_avg += avg.get(i).time_min;
-     			System.out.println(avg.get(i).time_min);
+     			//System.out.println(avg.get(i).time_min);
      			mid_avg += avg.get(i).time_med;
-     			System.out.println(avg.get(i).time_med);
+     			//System.out.println(avg.get(i).time_med);
      			max_avg += avg.get(i).time_max;
-     			System.out.println(avg.get(i).time_max);
+     			//System.out.println(avg.get(i).time_max);
      		}
      		insert_avg= insert_avg/avg.size();
  			min_avg= min_avg/avg.size();
